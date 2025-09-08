@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Parking System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.344.0/lucide.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon">
+                        <i data-lucide="car"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Smart Parking System</h1>
+                        <p>Intelligent Parking Management</p>
+                    </div>
+                </div>
+                
+                <div class="status-badge">
+                    <div class="status-indicator"></div>
+                    <span>System Online</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- System Status Bar -->
+    <div class="status-bar">
+        <div class="container">
+            <div class="status-content">
+                <div class="status-items">
+                    <div class="status-item">
+                        <i data-lucide="camera"></i>
+                        <span>Cameras Active</span>
+                    </div>
+                    <div class="status-item">
+                        <i data-lucide="activity"></i>
+                        <span>Sensors Online</span>
+                    </div>
+                    <div class="status-item">
+                        <i data-lucide="wifi"></i>
+                        <span>Real-time Updates</span>
+                    </div>
+                </div>
+                
+                <div class="status-item">
+                    <i data-lucide="smartphone"></i>
+                    <span>Mobile/Web Access</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="progress-section">
+        <div class="container">
+            <div class="progress-steps">
+                <div class="step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <span class="step-label">Find Spot</span>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step" data-step="2">
+                    <div class="step-number">2</div>
+                    <span class="step-label">Reserve</span>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step" data-step="3">
+                    <div class="step-number">3</div>
+                    <span class="step-label">Park & Pay</span>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step" data-step="4">
+                    <div class="step-number">4</div>
+                    <span class="step-label">Complete</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Dashboard Screen -->
+            <div id="dashboard-screen" class="screen active">
+                <div class="welcome-section">
+                    <h2>Welcome to Smart Parking</h2>
+                    <p>Our intelligent system continuously monitors all parking spots using advanced sensors and cameras. Find and reserve your perfect parking spot in real-time.</p>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loading-state" class="loading-section">
+                    <div class="loading-content">
+                        <i data-lucide="car" class="loading-icon"></i>
+                        <p>Checking parking spots, sensors, and cameras...</p>
+                    </div>
+                </div>
+
+                <!-- Dashboard Content -->
+                <div id="dashboard-content" class="dashboard-content hidden">
+                    <!-- Stats Overview -->
+                    <div class="stats-grid">
+                        <div class="stat-card available">
+                            <div class="stat-icon">
+                                <i data-lucide="map-pin"></i>
+                            </div>
+                            <div class="stat-info">
+                                <p class="stat-label">Available</p>
+                                <p class="stat-value" id="available-count">0</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card occupied">
+                            <div class="stat-icon">
+                                <i data-lucide="car"></i>
+                            </div>
+                            <div class="stat-info">
+                                <p class="stat-label">Occupied</p>
+                                <p class="stat-value" id="occupied-count">0</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card reserved">
+                            <div class="stat-icon">
+                                <i data-lucide="clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <p class="stat-label">Reserved</p>
+                                <p class="stat-value" id="reserved-count">0</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card total">
+                            <div class="stat-icon">
+                                <i data-lucide="users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <p class="stat-label">Total Spots</p>
+                                <p class="stat-value" id="total-count">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Available Spots -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Available Parking Spots</h3>
+                        </div>
+                        <div class="card-content">
+                            <div id="available-spots" class="spots-grid">
+                                <!-- Available spots will be populated here -->
+                            </div>
+                            <div id="no-spots" class="no-spots hidden">
+                                <i data-lucide="car" class="no-spots-icon"></i>
+                                <h3>No Spots Available</h3>
+                                <p>All parking spots are currently occupied or reserved.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Parking Lot Overview -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Parking Lot Overview</h3>
+                        </div>
+                        <div class="card-content">
+                            <div id="lot-overview" class="lot-grid">
+                                <!-- Lot overview will be populated here -->
+                            </div>
+                            <div class="legend">
+                                <div class="legend-item">
+                                    <div class="legend-color available"></div>
+                                    <span>Available</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color occupied"></div>
+                                    <span>Occupied</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color reserved"></div>
+                                    <span>Reserved</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reservation Screen -->
+            <div id="reservation-screen" class="screen">
+                <div class="screen-header">
+                    <button id="back-to-dashboard" class="back-btn">
+                        <i data-lucide="arrow-left"></i>
+                        Back
+                    </button>
+                    <h2>Reserve Parking Spot</h2>
+                </div>
+
+                <!-- Duration Selection -->
+                <div id="duration-step" class="reservation-step">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i data-lucide="clock"></i> Select Parking Duration</h3>
+                        </div>
+                        <div class="card-content">
+                            <div id="selected-spot-info" class="spot-info">
+                                <!-- Selected spot info will be populated here -->
+                            </div>
+
+                            <div class="form-group">
+                                <label for="duration-input">Duration (hours)</label>
+                                <input type="number" id="duration-input" min="1" max="24" value="1" placeholder="Enter hours">
+                            </div>
+
+                            <div class="cost-summary">
+                                <span>Estimated Cost:</span>
+                                <span id="estimated-cost" class="cost-value">$0</span>
+                            </div>
+
+                            <button id="check-availability-btn" class="btn btn-primary">Check Availability</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alternative Spots -->
+                <div id="alternative-step" class="reservation-step hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i data-lucide="alert-triangle"></i> Spot Unavailable for Duration</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="alert alert-warning">
+                                <i data-lucide="alert-triangle"></i>
+                                <p>The selected spot is not available for the requested duration. Please choose an alternative spot.</p>
+                            </div>
+
+                            <h4>Alternative Spots Available:</h4>
+                            <div id="alternative-spots" class="alternative-spots">
+                                <!-- Alternative spots will be populated here -->
+                            </div>
+
+                            <button id="modify-duration-btn" class="btn btn-outline">Modify Duration</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confirmation -->
+                <div id="confirmation-step" class="reservation-step hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Confirm Reservation</h3>
+                        </div>
+                        <div class="card-content">
+                            <div id="reservation-summary" class="reservation-summary">
+                                <!-- Reservation summary will be populated here -->
+                            </div>
+
+                            <div class="form-section">
+                                <h4>User Information</h4>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="user-name">Full Name</label>
+                                        <input type="text" id="user-name" placeholder="Enter your name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="user-email">Email</label>
+                                        <input type="email" id="user-email" placeholder="Enter your email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="user-phone">Phone Number</label>
+                                        <input type="tel" id="user-phone" placeholder="Enter your phone">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="vehicle-plate">Vehicle License Plate</label>
+                                        <input type="text" id="vehicle-plate" placeholder="Enter license plate">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="final-cost">
+                                <span>Total Cost:</span>
+                                <span id="final-cost" class="cost-value">$0</span>
+                            </div>
+
+                            <button id="proceed-payment-btn" class="btn btn-primary">Proceed to Payment</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment -->
+                <div id="payment-step" class="reservation-step hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i data-lucide="credit-card"></i> Payment Information</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="card-number">Card Number</label>
+                                    <input type="text" id="card-number" placeholder="1234 5678 9012 3456">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name-on-card">Name on Card</label>
+                                    <input type="text" id="name-on-card" placeholder="Enter name on card">
+                                </div>
+                                <div class="form-group">
+                                    <label for="expiry-date">Expiry Date</label>
+                                    <input type="text" id="expiry-date" placeholder="MM/YY">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cvv">CVV</label>
+                                    <input type="text" id="cvv" placeholder="123">
+                                </div>
+                            </div>
+
+                            <div class="payment-summary">
+                                <h4>Payment Summary</h4>
+                                <div class="summary-line">
+                                    <span id="payment-description">Spot - duration</span>
+                                    <span id="payment-amount">$0</span>
+                                </div>
+                                <div class="summary-line">
+                                    <span>Processing Fee</span>
+                                    <span>$0.50</span>
+                                </div>
+                                <div class="summary-total">
+                                    <span>Total</span>
+                                    <span id="payment-total">$0</span>
+                                </div>
+                            </div>
+
+                            <button id="complete-payment-btn" class="btn btn-primary">Complete Payment</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Processing -->
+                <div id="payment-processing" class="reservation-step hidden">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="processing-content">
+                                <div class="loading-spinner"></div>
+                                <h3>Processing Payment...</h3>
+                                <p>Please wait while we process your payment and confirm your reservation.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reservation Complete -->
+                <div id="reservation-complete" class="reservation-step hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="success-title"><i data-lucide="check-circle"></i> Reservation Confirmed!</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="success-content">
+                                <h4>Your parking spot is reserved</h4>
+                                <p>You have 15 minutes to arrive at your spot. Navigation directions have been sent to your phone.</p>
+                                
+                                <div id="confirmation-details" class="confirmation-details">
+                                    <!-- Confirmation details will be populated here -->
+                                </div>
+                            </div>
+
+                            <div class="alert alert-info">
+                                <p>A confirmation email and SMS with directions have been sent to you.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Session Screen -->
+            <div id="session-screen" class="screen">
+                <div class="session-header">
+                    <h2>Active Parking Session</h2>
+                    <p id="session-subtitle">Spot - Vehicle</p>
+                </div>
+
+                <!-- Session Status -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 id="session-status-title"><i data-lucide="navigation"></i> En Route to Parking Spot</h3>
+                    </div>
+                    <div class="card-content">
+                        <!-- Arriving State -->
+                        <div id="arriving-state" class="session-state">
+                            <div class="arriving-content">
+                                <i data-lucide="car" class="arriving-icon"></i>
+                                <h4>Waiting for Arrival</h4>
+                                <p>Please arrive at your spot within 15 minutes to confirm your reservation.</p>
+                                <button id="arrived-btn" class="btn btn-primary">I've Arrived</button>
+                            </div>
+                        </div>
+
+                        <!-- Parked State -->
+                        <div id="parked-state" class="session-state hidden">
+                            <div class="session-stats">
+                                <div class="stat-item">
+                                    <i data-lucide="map-pin"></i>
+                                    <p class="stat-label">Spot</p>
+                                    <p id="current-spot" class="stat-value">-</p>
+                                </div>
+                                <div class="stat-item">
+                                    <i data-lucide="timer"></i>
+                                    <p class="stat-label">Time Left</p>
+                                    <p id="time-remaining" class="stat-value">-</p>
+                                </div>
+                                <div class="stat-item">
+                                    <i data-lucide="dollar-sign"></i>
+                                    <p class="stat-label">Current Rate</p>
+                                    <p id="current-rate" class="stat-value">-</p>
+                                </div>
+                                <div class="stat-item">
+                                    <i data-lucide="dollar-sign"></i>
+                                    <p class="stat-label">Current Cost</p>
+                                    <p id="session-cost" class="stat-value">-</p>
+                                </div>
+                            </div>
+
+                            <div class="progress-section">
+                                <div class="progress-info">
+                                    <span>Session Progress</span>
+                                    <span id="progress-percentage">0% complete</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div id="progress-fill" class="progress-fill"></div>
+                                </div>
+                            </div>
+
+                            <div id="time-warning" class="alert alert-warning hidden">
+                                <i data-lucide="alert-triangle"></i>
+                                <p>Your parking session will expire soon. Extend your session or move your vehicle to avoid additional charges.</p>
+                            </div>
+
+                            <div class="extension-section">
+                                <h4>Extend Parking Session</h4>
+                                <div class="extension-buttons">
+                                    <button class="btn btn-outline extension-btn" data-duration="0.5">
+                                        <i data-lucide="plus"></i> 30 min
+                                    </button>
+                                    <button class="btn btn-outline extension-btn" data-duration="1">
+                                        <i data-lucide="plus"></i> 1 hour
+                                    </button>
+                                    <button class="btn btn-outline extension-btn" data-duration="2">
+                                        <i data-lucide="plus"></i> 2 hours
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button id="end-session-btn" class="btn btn-outline">End Session & Leave</button>
+                        </div>
+
+                        <!-- Extension Processing -->
+                        <div id="extension-state" class="session-state hidden">
+                            <div class="processing-content">
+                                <i data-lucide="clock" class="processing-icon"></i>
+                                <h4>Processing Extension Request</h4>
+                                <p id="extension-message">Checking availability...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real-time Pricing -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Dynamic Pricing Updates</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="pricing-grid">
+                            <div class="pricing-line">
+                                <span>Base Rate:</span>
+                                <span id="base-rate">$0/hour</span>
+                            </div>
+                            <div class="pricing-line">
+                                <span>Current Rate:</span>
+                                <span id="dynamic-rate">$0/hour</span>
+                            </div>
+                            <div class="pricing-line">
+                                <span>Time Used:</span>
+                                <span id="time-used">0h 0m</span>
+                            </div>
+                            <div class="pricing-line total">
+                                <span>Current Total:</span>
+                                <span id="current-total">$0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Updates -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Live System Updates</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="live-updates">
+                            <div class="update-item">
+                                <div class="update-indicator green"></div>
+                                <span>Sensors confirm vehicle occupancy</span>
+                            </div>
+                            <div class="update-item">
+                                <div class="update-indicator blue"></div>
+                                <span>Real-time pricing updates active</span>
+                            </div>
+                            <div class="update-item">
+                                <div class="update-indicator yellow"></div>
+                                <span>Database continuously updated</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Summary Screen -->
+            <div id="summary-screen" class="screen">
+                <div class="summary-header">
+                    <div class="success-header">
+                        <i data-lucide="check-circle"></i>
+                        <h2>Parking Session Complete</h2>
+                    </div>
+                    <p>Thank you for using our smart parking system!</p>
+                </div>
+
+                <!-- Session Summary -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i data-lucide="receipt"></i> Session Summary</h3>
+                    </div>
+                    <div class="card-content">
+                        <div id="summary-details" class="summary-details">
+                            <!-- Summary details will be populated here -->
+                        </div>
+
+                        <div id="overtime-warning" class="alert alert-warning hidden">
+                            <i data-lucide="clock"></i>
+                            <p>Your session exceeded the reserved time. Overtime charges have been applied.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cost Breakdown -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i data-lucide="dollar-sign"></i> Final Cost Breakdown</h3>
+                    </div>
+                    <div class="card-content">
+                        <div id="cost-breakdown" class="cost-breakdown">
+                            <!-- Cost breakdown will be populated here -->
+                        </div>
+
+                        <div class="payment-success">
+                            <i data-lucide="check-circle"></i>
+                            <div>
+                                <span>Payment Processed Successfully</span>
+                                <p>Charged to card ending in ****1234</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Receipt Options -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Receipt & Documentation</h3>
+                    </div>
+                    <div class="card-content">
+                        <div id="receipt-status" class="alert alert-info">
+                            <i data-lucide="mail"></i>
+                            <p>Sending receipt...</p>
+                        </div>
+
+                        <div class="receipt-actions">
+                            <button class="btn btn-outline">
+                                <i data-lucide="download"></i> Download PDF
+                            </button>
+                            <button class="btn btn-outline">
+                                <i data-lucide="mail"></i> Email Receipt
+                            </button>
+                            <button class="btn btn-outline">
+                                <i data-lucide="message-square"></i> SMS Receipt
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedback -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Rate Your Experience</h3>
+                    </div>
+                    <div class="card-content">
+                        <p>How was your parking experience today?</p>
+                        
+                        <div class="rating-stars">
+                            <button class="star-btn" data-rating="1">
+                                <i data-lucide="star"></i>
+                            </button>
+                            <button class="star-btn" data-rating="2">
+                                <i data-lucide="star"></i>
+                            </button>
+                            <button class="star-btn" data-rating="3">
+                                <i data-lucide="star"></i>
+                            </button>
+                            <button class="star-btn" data-rating="4">
+                                <i data-lucide="star"></i>
+                            </button>
+                            <button class="star-btn" data-rating="5">
+                                <i data-lucide="star"></i>
+                            </button>
+                        </div>
+                        
+                        <div id="feedback-thanks" class="alert alert-info hidden">
+                            <i data-lucide="check-circle"></i>
+                            <p>Thank you for your feedback! Your rating helps us improve our service.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="summary-actions">
+                    <button id="new-session-btn" class="btn btn-primary">Book Another Parking Spot</button>
+                    <button class="btn btn-outline">View Parking History</button>
+                </div>
+
+                <!-- Support Info -->
+                <div class="card">
+                    <div class="card-content">
+                        <div class="support-info">
+                            <p>Need help? Contact support at <strong>support@smartparking.com</strong> or call <strong>(555) 123-PARK</strong></p>
+                            <p>Reference your confirmation number: <span id="confirmation-reference" class="confirmation-number">-</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i data-lucide="car"></i>
+                        <span>Smart Parking</span>
+                    </div>
+                    <p>Revolutionizing parking with intelligent technology, real-time monitoring, and seamless user experience.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Features</h3>
+                    <ul>
+                        <li>Real-time Spot Detection</li>
+                        <li>Dynamic Pricing</li>
+                        <li>Mobile Reservations</li>
+                        <li>Automatic Billing</li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>System Status</h3>
+                    <ul>
+                        <li><div class="status-dot green"></div> Sensors: Online</li>
+                        <li><div class="status-dot green"></div> Cameras: Active</li>
+                        <li><div class="status-dot green"></div> Database: Updated</li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li>24/7 Customer Service</li>
+                        <li>support@smartparking.com</li>
+                        <li>(555) 123-PARK</li>
+                        <li>Live Chat Available</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 Smart Parking System. All rights reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
